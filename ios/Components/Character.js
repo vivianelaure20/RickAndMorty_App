@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 
-import CharacterScreen from "./ios/Screen/CharacterScreen";
 import { ScrollView } from "react-native-gesture-handler";
+
+import CharacterScreen from "../Screens/CharacterScreen";
 
 const Characters = (props) => {
   const [characters, setCharacters] = useState([]);
@@ -20,7 +21,6 @@ const Characters = (props) => {
         const result = response.data && response.data.results;
 
         setCharacters(result);
-        setLoading(false);
       } catch (e) {
         console.error(e);
       }
@@ -31,8 +31,8 @@ const Characters = (props) => {
   return (
     <View>
       <ScrollView>
-        {characters.map((c) => (
-          <CharacterScreen {...c} />
+        {characters.map((character, i) => (
+          <CharacterScreen key={i} character={character} />
         ))}
       </ScrollView>
     </View>

@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
 
-import CharacterScreen from "./ios/Screens/CharacterScreen";
+import Character from "./ios/Components/Character";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <CharacterScreen />
+      <Character />
     </View>
   );
 }
