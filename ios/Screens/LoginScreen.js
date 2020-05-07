@@ -30,10 +30,9 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
   image: {
-    flex: 1,
     resizeMode: "cover",
     justifyContent: "center",
-    width: 450,
-    height: 600,
+    width: 380,
+    height: 630,
   },
 });

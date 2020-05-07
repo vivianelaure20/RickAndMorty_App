@@ -1,21 +1,56 @@
 import React from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { View } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
 
 import Character from "./ios/Components/Character";
+import Locations from "./ios/Components/Locations";
+import Episodes from "./ios/Components/Episodes";
+import LoginScreen from "./ios/Screens/LoginScreen";
 
-export default function App() {
+function LoginDrawer() {
   return (
-    <View style={styles.container}>
+    <View>
+      <LoginScreen />
+    </View>
+  );
+}
+
+function CharacterDrawer() {
+  return (
+    <View>
       <Character />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+function LocationsDrawer() {
+  return (
+    <View>
+      <Locations />
+    </View>
+  );
+}
+
+function EpisodesDrawer() {
+  return (
+    <View>
+      <Episodes />
+    </View>
+  );
+}
+
+const Drawer = createDrawerNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName={"Home"}>
+        <Drawer.Screen name="Home" component={LoginDrawer} />
+        <Drawer.Screen name="Characters" component={CharacterDrawer} />
+        <Drawer.Screen name="Locations" component={LocationsDrawer} />
+        <Drawer.Screen name="Episodes" component={EpisodesDrawer} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
