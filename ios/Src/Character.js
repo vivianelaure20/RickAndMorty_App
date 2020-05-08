@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 
 import { ScrollView } from "react-native-gesture-handler";
 

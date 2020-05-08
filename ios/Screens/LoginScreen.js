@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     justifyContent: "center",
     width: 380,
-    height: 630,
+    height: 620,
   },
 });
