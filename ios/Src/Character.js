@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { View, Button } from "react-native";
+import { View, SafeAreaView, FlatList } from "react-native";
 
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -11,8 +11,8 @@ const Characters = (props) => {
 
   const [characters, setCharacters] = useState([]);
   const [info, setInfo] = useState({
-    count: 591,
-    pages: 30,
+    count: 394,
+    pages: 20,
     next: null,
     prev: null,
   });
@@ -28,7 +28,12 @@ const Characters = (props) => {
       const result = response.data && response.data.results;
       const info = response.data && response.data.info;
 
-      setCharacters(result);
+      if (characters.length <= 0) {
+        setCharacters(result);
+      } else {
+        setCharacters(characters.concat(result));
+      }
+
       setInfo(info);
     } catch (e) {
       console.error(e);
@@ -39,30 +44,28 @@ const Characters = (props) => {
     getCharacters(initialUrl);
   }, []);
 
-  const getNextPage = () => {
-    {
-      info.next ? <>{getCharacters(info.next)}</> : null;
-    }
-  };
-  const getPreviousPage = () => {
-    {
-      info.prev ? <>{getCharacters(info.prev)}</> : null;
-    }
-  };
+  function Item(info) {
+    return (
+      <View>
+        <ScrollView>
+          {characters.map((character, i) => (
+            <CharacterScreen key={i} character={character} />
+          ))}
+        </ScrollView>
+      </View>
+    );
+  }
 
   return (
-    <View>
-      {info.prev && (
-        <Button title="Previous" onPress={getPreviousPage}></Button>
-      )}
-      {info.next && <Button title="Next" onPress={getNextPage}></Button>}
-
-      <ScrollView>
-        {characters.map((character, i) => (
-          <CharacterScreen key={i} character={character} />
-        ))}
-      </ScrollView>
-    </View>
+    <FlatList
+      keyExtractor={(item, index) => index.toString()}
+      data={getCharacters}
+      onEndReached={() => {
+        getCharacters(info.next);
+      }}
+      onEndReachedThreshold={0.5}
+      renderItem={(e, info) => <Item key={e} info={info} />}
+    />
   );
 };
 
