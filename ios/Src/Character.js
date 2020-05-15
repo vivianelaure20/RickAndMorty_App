@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { View, SafeAreaView, FlatList } from "react-native";
+import {
+  View,
+  SafeAreaView,
+  FlatList,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -13,11 +19,12 @@ const Characters = (props) => {
   const [info, setInfo] = useState({
     count: 394,
     pages: 20,
-    next: null,
-    prev: null,
+    next: false,
+    prev: false,
   });
 
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   async function getCharacters(url) {
     try {
@@ -56,16 +63,43 @@ const Characters = (props) => {
     );
   }
 
+  function wait(timeout) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, timeout);
+    });
+  }
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
+
+  const renderFooter = () => {
+    return (
+      <View>
+        {info.next ? <ActivityIndicator color="black" size="large" /> : null}
+      </View>
+    );
+  };
+
   return (
-    <FlatList
-      keyExtractor={(item, index) => index.toString()}
-      data={getCharacters}
-      onEndReached={() => {
-        getCharacters(info.next);
-      }}
-      onEndReachedThreshold={0.5}
-      renderItem={(e, info) => <Item key={e} info={info} />}
-    />
+    <SafeAreaView>
+      <FlatList
+        keyExtractor={(item, index) => index.toString()}
+        data={getCharacters}
+        onEndReached={() => {
+          getCharacters(info.next);
+        }}
+        onEndReachedThreshold={0.5}
+        renderItem={(e, info) => <Item key={e} info={info} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListFooterComponent={renderFooter}
+      />
+      {loading ? <ActivityIndicator color="black" size="small" /> : null}
+    </SafeAreaView>
   );
 };
 
