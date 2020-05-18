@@ -8,14 +8,14 @@ const CharacterScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Card style={{ height: 700 }}>
+      <Card>
         <CardImage
           style={styles.image}
           source={{
             uri: character.image,
           }}
         />
-        <CardContent style={{ marginTop: 350 }}>
+        <CardContent>
           <Text
             style={{
               textAlignVertical: "center",
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     overflow: "hidden",
-    backgroundColor: "#ff00ff00",
+    backgroundColor: "gray",
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
@@ -86,9 +86,6 @@ const styles = StyleSheet.create({
   image: {
     width: 400,
     height: undefined,
-
-    marginBottom: 80,
-    //aspectRatio: 1200 / 360,
     resizeMode: "contain",
   },
 });
